@@ -1,0 +1,10 @@
+Start with the General.vhd. Usually one architecture method will be used: dataflow, behavioral, structural, or mixed. 
+1. Dataflow: signal assignment statements are executed concurrently.
+2. Behavioral: signal assignment statements are countained between process and end process and execute sequentially.
+3. Structural: interconnected components, usually with no process block. Components should be written in seperate files and then imported.
+4. Mixed: a combination of two or more architecture methods.
+*When using General.vhd, delete the other unusued architecture types.
+
+In General.vhd, any code that is within square brackets is optional. 
+For example [signals: mode type := initial value] is a general syntax that should be replaced with defined parameters, or can be deleted entirely.
+
