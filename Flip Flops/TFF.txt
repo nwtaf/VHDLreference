@@ -1,0 +1,27 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity t_ff is
+    port (
+        clk   : in  std_logic;
+        T     : in  std_logic;
+        Q     : out std_logic;
+        Q_bar : out std_logic
+    );
+end t_ff;
+
+architecture Behavioral of t_ff is
+    signal temp : std_logic;
+begin
+    process (clk)
+    begin
+        if rising_edge(clk) then
+            if T = '1' then
+                temp <= not temp;
+            end if;
+        end if;
+    end process;
+
+    Q <= temp;
+    Q_bar <= not temp;
+end Behavioral;

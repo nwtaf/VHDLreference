@@ -1,0 +1,40 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;--for integers
+
+ENTITY TB is
+END ENTITY;
+
+ARCHITECTURE CaseExample of TB is
+COMPONENT CaseCaseExample is
+    PORT(
+        CLK: in std_logic
+        );
+END COMPONENT;
+
+--in and out signals
+signal CLK: std_logic;
+signal timing_generator: integer range 0 to 7;
+
+BEGIN
+--instantiate unit under test (UUT)
+    uut: CaseTest 
+    PORT MAP(       
+        CLK => CLK 
+        );
+
+ --clock process
+clock_process: process
+begin 
+	CLK <= '0';
+	wait for 5 ns;
+	CLK <= '1';
+	wait for 5 ns;
+end process;
+
+--TB_process: process
+--begin
+--    wait;
+--end process;
+END ARCHITECTURE;
+END;

@@ -1,0 +1,41 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL; --for integers
+
+ENTITY CaseExample is
+	port(
+		CLK: in std_logic
+	    );
+END ENTITY;
+
+ARCHITECTURE Behavioral of CaseTest is
+signal timing_generator: integer range 0 to 7;
+BEGIN 
+    process(CLK)
+	 begin
+		if CLK'event and clk = '1' then
+			timing_generator <= timing_generator + 1;
+			report "timing_generator incremented: " & integer'image(timing_generator);
+		end if;
+    	case timing_generator is
+			when 0 => --T0
+			null;
+			when 1 => --T1
+			null;
+			when 2 => --T2
+			null;
+			when 3 => --T3
+			null;
+			when 4 => --T4
+			null;
+			when 5 => --T5
+			null;
+			when 6 => --T6
+			null;
+			when 7 => --T7
+			null;
+			when others =>
+			timing_generator <= 0;
+		end case;
+	end process;
+END ARCHITECTURE;

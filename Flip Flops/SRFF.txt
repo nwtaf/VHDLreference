@@ -1,0 +1,30 @@
+library IEEE;
+use IEEE.std_logic_1164.all;
+
+entity sr_ff is
+    port (
+        clk   : in  std_logic;
+        S     : in  std_logic;
+        R     : in  std_logic;
+        Q     : out std_logic;
+        Q_bar : out std_logic
+    );
+end sr_ff;
+
+architecture Behavioral of sr_ff is
+    signal temp : std_logic;
+begin
+    process (clk)
+    begin
+        if rising_edge(clk) then
+            if S = '1' and R = '0' then
+                temp <= '1';
+            elsif S = '0' and R = '1' then
+                temp <= '0';
+            end if;
+        end if;
+    end process;
+
+    Q <= temp;
+    Q_bar <= not temp;
+end Behavioral;

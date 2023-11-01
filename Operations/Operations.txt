@@ -1,0 +1,78 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+ENTITY operations is
+	port( Arg1, Arg2, opcode: in unsigned(3 downto 0);
+        tmp: out unsigned(7 downto 0);
+        err: out boolean := false
+      );
+end ENTITY;
+
+ARCHITECTURE Behavioral of operations is
+signal A1, A2: unsigned(7 downto 0);
+BEGIN 
+  process(A1, A2, Arg1, Arg2, opcode)
+  BEGIN  
+	 err <= false;
+    A1 <= "0000" & Arg1;
+    A2 <= "0000" & Arg2;
+  case(opcode) is
+    when "0000" => -- Copy 1
+      tmp <= A1;
+    when "0001" => -- Copy 2
+      tmp <= A2;
+    when "0010" => -- Unsigned Minus 1
+      tmp <= not A1 + "00000001";
+    when "0011" => -- Unsigned Minus 2
+      tmp <= not A2 + "00000001";
+    when "0100" => -- Pow 1
+		  tmp <= to_unsigned((to_integer(A1) * (2**to_integer(A2))),8);
+    when "0101" => -- Pow 2
+		  tmp <= to_unsigned((to_integer(A2) * (2**to_integer(A1))),8);
+    when "0110" => -- Add
+      tmp <= A1 + A2;
+    when "0111" => -- Sub
+      tmp <= A1 - A2;
+    when "1000" => -- Min
+      if A1<A2 then
+        tmp <= A1;
+      elsif A1>A2 then
+        tmp <= A2;
+      else
+        err <= true;
+		  tmp <= "00000000";
+      end if;
+    when "1001" => -- Max
+      if A1>A2 then
+        tmp <= A1;
+      elsif A1<A2 then
+        tmp <= A2;
+      else
+        err <= true;
+		  tmp <= "00000000";
+		  end if;
+    when "1010" => -- Bit Invert 1
+      tmp <= not A1;
+    when "1011" => -- Bit Invert 2
+      tmp <= not A2;
+    when "1100" => -- Div 1
+		if to_unsigned((2**to_integer(A2)),8) < A1 then
+		  tmp <= to_unsigned(to_integer(A1) / (2**to_integer(A2)),8); --check parenthesis
+		else
+			err <= true;
+			tmp <= "00000000";
+		end if;
+    when "1101" => -- Div 2
+		if to_unsigned((2**to_integer(A1)),8) < A1 then
+		  tmp <= to_unsigned(to_integer(A2) / (2**to_integer(A1)),8); --check parenthesis
+		else
+			err <= true;
+			tmp <= "00000000";
+		end if;
+    when others => -- when the opcode is not valid
+      err <= true;
+      report "opcode not valid: " & integer'image(to_integer(opcode)) severity note;
+    end case;
+	END process;
+END ARCHITECTURE;
